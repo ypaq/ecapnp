@@ -30,6 +30,7 @@
 -type ref() :: ecapnp:ref().
 -type ref_kind() :: ecapnp:ref_kind().
 -type schema() :: ecapnp:schema().
+-type schema_name() :: ecapnp:schema().
 -type schema_kind() :: ecapnp:schema_kind().
 -type schema_node() :: ecapnp:schema_node().
 -type schema_nodes() :: ecapnp:schema_nodes().

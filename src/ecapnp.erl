@@ -41,8 +41,8 @@
               element_size/0, enum/0, enum_values/0, far_ref/0,
               field_type/0, field_value/0, group/0, interface/0,
               list_ref/0, message/0, object/0, ptr/0, ptr_count/0,
-              ptr_index/0, ref/0, ref_kind/0, schema/0, schema_kind/0,
-              schema_node/0, schema_nodes/0, schema_type/0,
+              ptr_index/0, ref/0, ref_kind/0, schema/0, schema_name/0,
+              schema_kind/0, schema_node/0, schema_nodes/0, schema_type/0,
               segment_id/0, segment_offset/0, segment_pos/0, struct/0,
               struct_fields/0, struct_ref/0, text/0, type_id/0,
               type_name/0, value/0, value_type/0, word_count/0 ]).
@@ -118,8 +118,11 @@
 
 -type ref_kind() :: null | struct_ref() | list_ref() | far_ref().
 
--type schema() :: #schema_node{ kind::file }.
+-type schema() :: #schema_node{}.
 %% The top-level schema node (for the .capnp-file).
+
+-type schema_name() :: atom().
+%% Module name of generated erlang code from schema.
 
 -type schema_kind() :: file | struct()
                      | enum() | interface()
@@ -182,7 +185,7 @@
 %% API Implementation
 %% ===================================================================
 
--spec get_root(type_name(), schema(), message()) -> {ok, Root::object()}.
+-spec get_root(type_name(), schema_name(), message()) -> {ok, Root::object()}.
 %% @doc Get the root object for a message.
 %% The message should already have been unpacked and parsed.
 %% @see ecapnp_get:root/3
@@ -194,7 +197,7 @@ get_root(Type, Schema, Segments) ->
 get_root(Schema, Segments) ->
     ecapnp_get:root(Schema, Segments).
 
--spec set_root(type_name(), schema()) -> {ok, Root::object()}.
+-spec set_root(type_name(), schema_name()) -> {ok, Root::object()}.
 %% @doc Set the root object for a new message.
 %% This creates a new empty message, ready to be filled with data.
 %%
@@ -206,7 +209,7 @@ set_root(Type, Schema) ->
 set_root(Schema) ->
     ecapnp_set:root(Schema).
 
--spec get(object()) -> {field_name(), field_value()} | field_name().
+% -spec get(object()) -> {field_name(), field_value()} | field_name().
 %% @doc Read the unnamed union value of object.
 %% The result value is either a tuple, describing which union tag it
 %% is, and its associated value, or just the tag name, if the value is
@@ -252,7 +255,8 @@ const(Name, Schema) ->
                 #data{ type=Type, default=Value } ->
                     ecapnp_val:get(Type, Value);
                 #ptr{}=Ptr ->
-                    ecapnp_get:ref_data(Ptr, #ref{ data=not_yet_implemented })
+                    error(not_yet_implemented)
+                    % ecapnp_get:ref_data(Ptr, #ref{ data=not_yet_implemented })
             end
     end.
 
