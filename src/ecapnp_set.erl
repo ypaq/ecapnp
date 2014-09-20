@@ -32,7 +32,7 @@
 %% API functions
 %% ===================================================================
 
--spec root(type_name(), schema()) -> {ok, object()}.
+-spec root(type_name(), schema_name()) -> {ok, object()}.
 %% @doc Get root object for a new message.
 root(Type, Schema) ->
     root(Schema:schema(Type)).

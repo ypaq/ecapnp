@@ -38,7 +38,7 @@
 root(Node, Segments) ->
     {ok, ecapnp_obj:from_data(Segments, Node)}.
 
--spec root(type_name(), schema(), message()) -> {ok, Root::object()}.
+-spec root(type_name(), schema_name(), message()) -> {ok, Root::object()}.
 root(Type, Schema, Segments) ->
     root(Schema:schema(Type), Segments).
 
