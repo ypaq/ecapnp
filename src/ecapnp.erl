@@ -86,6 +86,9 @@
 -type interface() :: #interface{}.
 %% Describes the schema for a interface type.
 
+-type interface_ref() :: #interface_ref{}.
+%% The reference is a pointer to an interface.
+
 -type list_ref() :: #list_ref{}.
 %% The reference is a pointer to a list.
 
@@ -116,7 +119,7 @@
 %% To get the position of the data the reference points to:
 %% ``DataPos = R#ref.pos + R#ref.offset + 1.''
 
--type ref_kind() :: null | struct_ref() | list_ref() | far_ref().
+-type ref_kind() :: null | struct_ref() | list_ref() | far_ref() | interface_ref().
 
 -type schema() :: #schema_node{}.
 %% The top-level schema node (for the .capnp-file).
@@ -209,7 +212,7 @@ set_root(Type, Schema) ->
 set_root(Schema) ->
     ecapnp_set:root(Schema).
 
-% -spec get(object()) -> {field_name(), field_value()} | field_name().
+-spec get(object()) -> {field_name(), field_value()} | field_name().
 %% @doc Read the unnamed union value of object.
 %% The result value is either a tuple, describing which union tag it
 %% is, and its associated value, or just the tag name, if the value is
@@ -254,7 +257,7 @@ const(Name, Schema) ->
             case Field of
                 #data{ type=Type, default=Value } ->
                     ecapnp_val:get(Type, Value);
-                #ptr{}=Ptr ->
+                #ptr{}=_Ptr ->
                     error(not_yet_implemented)
                     % ecapnp_get:ref_data(Ptr, #ref{ data=not_yet_implemented })
             end
