@@ -1,8 +1,6 @@
 # Options for erlang.mk
 PROJECT = ecapnp
 
-test%: TEST_ERLC_OPTS += -DEUNIT_NOAUTO
-
 CT_SUITES = eunit proper
 PLT_APPS = crypto
 EDOC_OPTS = preprocess, {dir, "doc/html"}
@@ -10,10 +8,10 @@ EDOC_OPTS = preprocess, {dir, "doc/html"}
 # call `make tests TEST_DEPS=` after the first run in order to skip
 # the `make all` for all test deps.. (which for meck using rebar is
 # sloooow... :/ )
-TEST_DEPS ?= meck proper
+TEST_DEPS = meck proper
 
-dep_meck = https://github.com/eproxus/meck.git master
-dep_proper = pkg://proper master
+dep_meck = git https://github.com/eproxus/meck.git master
+dep_proper = git https://github.com/manopapad/proper.git master
 
 PKG_FILE_URL ?= https://raw.github.com/kaos/erlang.mk/master/packages.v1.tsv
 
